@@ -5,7 +5,8 @@ const applicationState = {
     letters: [],
     topics: [],
     recipients: [],
-    authors: []
+    authors: [],
+    topicChoices: []
 }
 
 const API = "http://localhost:8088"
@@ -26,21 +27,23 @@ export const getLetters = () => {
     return applicationState.letters.map(letter => ({ ...letter }))
 }
 //------------------------------------------------------------------
-export const postLetters = (letterRequest) => {
+export const postLetters = (dataToSendToSave) => {
     const fetchOptions = {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(letterRequest)
+        body: JSON.stringify(dataToSendToSave)
     }
     return fetch(`${API}/letters`, fetchOptions)
         .then(response => response.json())
-        .then(() => {
+        .then(jResponse => {
             mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
+            return jResponse
         })
 }
-//----------------------------------------------------------------------------------
+
+
 ////////////////////////////////////////////////////////////////////////////////////
 //         TOPICS          //
 export const fetchTopics = () => {
@@ -56,6 +59,38 @@ export const fetchTopics = () => {
 export const getTopics = () => {
     return applicationState.topics.map(topic => ({...topic}))
 }
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+//  TOPIC CHOICES    //
+export const fetchTopicChoices = () => {
+    return fetch(`${API}/topicChoices?_expand=topic`)
+        .then(response => response.json())
+        .then(
+            (topic) => {
+                applicationState.topicChoices = topic
+            }
+        )
+}
+export const getTopicChoices = () => {
+    return applicationState.topicChoices.map(topicChoices => ({...topicChoices}))
+}
+
+export const postTopics = (dataToSendToSave) => {
+    const fetchOptions = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dataToSendToSave)
+    }
+    return fetch(`${API}/topicChoices`, fetchOptions)
+        .then(response => response.json())
+        .then(() => {
+            mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
+        })
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //        RECIPIENTS      //

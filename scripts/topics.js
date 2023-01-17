@@ -1,14 +1,7 @@
 import { getTopics } from "./dataAccess.js"
 
 
-// document.addEventListener(
-//     "change",
-//     (event) => {
-//         if (event.target.name === "topic") {
-//             setTopicId(parseInt(event.target.value))
-//         }
-//     }
-//     )
+
     
 export const letterTopics = () => {
     const topics = getTopics()
@@ -18,7 +11,7 @@ export const letterTopics = () => {
     const listItemsArray = topics.map(
         (topic) => {
             return `<li>
-            <input type="radio" name="topic" id="${topic.id}"> ${topic.name}</input>
+            <input type="checkbox" name="topic" id="${topic.id}"> ${topic.name}</input>
             </li>`
         }
     )

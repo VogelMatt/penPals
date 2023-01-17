@@ -1,4 +1,4 @@
-import { fetchAuthors, fetchLetters, fetchRecipients, fetchTopics } from "./dataAccess.js"
+import { fetchAuthors, fetchLetters, fetchRecipients, fetchTopicChoices, fetchTopics } from "./dataAccess.js"
 import { PenPals } from "./PenPals.js"
 
 
@@ -8,6 +8,7 @@ const render = () => {
     fetchRecipients()
     .then(() => fetchAuthors())
     .then(() => fetchLetters())
+    .then(() => fetchTopicChoices())
     .then(() => fetchTopics())
     .then(
         () => {
